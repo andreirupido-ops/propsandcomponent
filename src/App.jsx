@@ -25,6 +25,26 @@ function App() {
     return () => clearTimeout(timer);
   }, [searchText]);
 
+  // Filter and Sort Products
+  const filteredProducts = [...products]
+    .filter((product) =>
+      product.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+    )
+    .filter((product) =>
+      category === "All" || product.category === category
+    );
+
+  if (sortOrder === "low-to-high") {
+    filteredProducts.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === "high-to-low") {
+    filteredProducts.sort((a, b) => b.price - a.price);
+  }
+
+  // Update Document Title Effect
+  useEffect(() => {
+    document.title = `CvSU Mini Store (${filteredProducts.length} results)`;
+  }, [filteredProducts.length]);
+
   // Add to Cart callback
   const handleAddToCart = (productTitle) => {
     setCartCount(cartCount + 1);
@@ -66,20 +86,30 @@ function App() {
         onClear={handleClearFilters}
       />
 
+      <p className="product-count">
+        Showing {filteredProducts.length} of {products.length} products
+      </p>
+
       <main className="product-grid">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            title={product.title}
-            price={product.price}
-            category={product.category}
-            inStock={product.inStock}
-            onAddToCart={handleAddToCart}
-          >
-            {product.id === 1 && <span className="badge">New</span>}
-            {product.id === 5 && <span className="badge">Sale</span>}
-          </ProductCard>
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              title={product.title}
+              price={product.price}
+              category={product.category}
+              inStock={product.inStock}
+              onAddToCart={handleAddToCart}
+            >
+              {product.id === 1 && <span className="badge">New</span>}
+              {product.id === 5 && <span className="badge">Sale</span>}
+            </ProductCard>
+          ))
+        ) : (
+          <p className="empty-message">
+            No products found. Try a different keyword or category.
+          </p>
+        )}
       </main>
     </div>
   );
