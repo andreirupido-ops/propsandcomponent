@@ -1,17 +1,41 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "./components/ProductCard";
+import SearchBar from "./components/SearchBar";
 import products from "./data/products";
 import "./App.css";
 
 function App() {
+  // Lab 3 cart states
   const [cartCount, setCartCount] = useState(0);
   const [lastAdded, setLastAdded] = useState("");
 
-  // Callback function from parent to child
+  // Lab 4 states
+  const [searchText, setSearchText] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [category, setCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState("default");
+
+  // Debounce Effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // Add to Cart callback
   const handleAddToCart = (productTitle) => {
     setCartCount(cartCount + 1);
     setLastAdded(productTitle);
+  };
+
+  // Clear Filters callback
+  const handleClearFilters = () => {
+    setSearchText("");
+    setCategory("All");
+    setSortOrder("default");
   };
 
   return (
@@ -31,6 +55,16 @@ function App() {
           </p>
         )}
       </div>
+
+      <SearchBar
+        searchText={searchText}
+        setSearchText={setSearchText}
+        category={category}
+        setCategory={setCategory}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        onClear={handleClearFilters}
+      />
 
       <main className="product-grid">
         {products.map((product) => (
