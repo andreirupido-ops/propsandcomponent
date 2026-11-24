@@ -1,16 +1,24 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Product Catalog – Laboratory Exercise 3
 
-Currently, two official plugins are available:
+## Guide Questions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 1. What is the difference between props and state in React?
 
-## React Compiler
+Props are used to pass data from a parent component to a child component, while state stores data that can change over time within a component.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 2. Why should a child component not directly modify its props?
 
-## Expanding the ESLint configuration
+A child component should not directly modify its props because props are read-only. The parent component is responsible for managing the data and passing it to the child.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3. How does a callback function allow a child component to communicate with its parent?
+
+A callback function allows a child component to notify its parent about an event. In this project, the ProductCard component calls the onAddToCart function when the Add to Cart button is clicked.
+
+### 4. Why are keys important when rendering lists in React? What happens when keys are missing or duplicated?
+
+Keys help React identify each item in a list when items are added, removed, or updated. Missing or duplicated keys can cause warnings and make list updates less reliable.
+
+### 5. What is the benefit of using the children prop?
+
+The children prop allows a component to receive and display content placed between its opening and closing tags. In this project, it is used to display labels such as New and Sale inside selected product cards.
